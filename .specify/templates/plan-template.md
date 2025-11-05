@@ -31,7 +31,29 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Code Quality Standards**:
+- [ ] All code will follow linting/formatting standards
+- [ ] Type hints will be used where applicable  
+- [ ] Documentation strings planned for all public APIs
+- [ ] Code complexity is justified or will be kept minimal
+
+**Test-Driven Development**:
+- [ ] Tests will be written before implementation
+- [ ] Target 90% code coverage (100% for critical paths)
+- [ ] Red-Green-Refactor cycle will be followed
+- [ ] Tests will be independent and fast-running
+
+**User Experience Consistency**:
+- [ ] CLI interfaces follow standard patterns (--help, --version, --verbose)
+- [ ] Error messages will be actionable with remediation steps
+- [ ] Output formats will be consistent (JSON + human-readable)
+- [ ] MCP protocol compliance ensured
+
+**Performance Requirements**:
+- [ ] API responses <200ms p95 requirement identified
+- [ ] Memory usage <100MB for standard operations
+- [ ] Performance tests planned for critical paths
+- [ ] Progress indicators planned for long operations
 
 ## Project Structure
 
