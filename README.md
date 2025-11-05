@@ -17,30 +17,11 @@ A Model Context Protocol (MCP) server that provides fake/mock data generation ca
 ### Prerequisites
 
 - Node.js 18+ installed on your system
-- An MCP-compatible client (e.g., Claude Desktop, Cline, or any MCP client)
-
-### Install via npm
-
-```bash
-npm install -g faker-mcp-server
-```
-
-### Verify Installation
-
-```bash
-faker-mcp-server --version
-```
+- An MCP-compatible client (e.g., Claude Desktop, Cline, Cursor or any MCP client)
 
 ## Quick Start
 
-### Claude Desktop Setup
-
-1. Open Claude Desktop configuration file:
-   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - **Windows**: `%APPDATA%\\Claude\\claude_desktop_config.json`
-   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
-
-2. Add the Faker MCP server to the `mcpServers` section:
+Add the Faker MCP server to the `mcpServers` section:
 
 ```json
 {
@@ -53,7 +34,7 @@ faker-mcp-server --version
 }
 ```
 
-3. Restart Claude Desktop
+See the [MCP Client Configurations](#mcp-client-configurations) section for detailed setup instructions for various MCP clients.
 
 ## Available Tools
 
