@@ -74,11 +74,20 @@ export interface DatasetSchema {
 }
 
 /**
+ * Range pattern value
+ */
+export interface RangePattern {
+  min: number;
+  max: number;
+  precision?: number;
+}
+
+/**
  * Custom pattern definition
  */
 export interface CustomPattern {
   type: PatternType;
-  value: string | string[] | { min: number; max: number };
+  value: string | string[] | RangePattern;
 }
 
 /**

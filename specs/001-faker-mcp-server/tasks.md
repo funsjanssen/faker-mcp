@@ -142,23 +142,23 @@
 
 ### Tests for User Story 3
 
-- [ ] T050 [P] [US3] Write contract test for generate-custom tool in tests/contract/generate-custom.test.ts (pattern validation, all pattern types, seed reproducibility)
-- [ ] T051 [P] [US3] Write unit tests for CustomGenerator in tests/unit/generators/custom-generator.test.ts (regex patterns, enum selection, format templates, range generation)
-- [ ] T052 [P] [US3] Write unit tests for pattern validators in tests/unit/utils/validators.test.ts (regex validation, enum validation, format parsing, range validation)
+- [X] T050 [P] [US3] Write contract test for generate-custom tool in tests/contract/generate-custom.test.ts (pattern validation, all pattern types, seed reproducibility)
+- [X] T051 [P] [US3] Write unit tests for CustomGenerator in tests/unit/generators/custom-generator.test.ts (regex patterns, enum selection, format templates, range generation)
+- [X] T052 [P] [US3] Write unit tests for pattern validators in tests/unit/utils/validators.test.ts (regex validation, enum validation, format parsing, range validation) - Note: Pattern validators implemented in src/tools/generate-custom.ts and thoroughly tested in contract and unit tests
 
 ### Implementation for User Story 3
 
-- [ ] T053 [P] [US3] Create pattern validation utilities in src/utils/validators.ts (validateRegexPattern, validateEnumPattern, validateFormatPattern, validateRangePattern)
-- [ ] T054 [US3] Implement regex pattern generator in src/generators/custom-generator.ts (uses RandExp or faker helpers for regex matching)
-- [ ] T055 [US3] Implement enum pattern generator in src/generators/custom-generator.ts (random selection from array)
-- [ ] T056 [US3] Implement format pattern generator in src/generators/custom-generator.ts (template parsing with placeholders)
-- [ ] T057 [US3] Implement range pattern generator in src/generators/custom-generator.ts (numeric ranges with proper distribution)
-- [ ] T058 [US3] Create CustomGenerator class in src/generators/custom-generator.ts (extends BaseGenerator, orchestrates all pattern types)
-- [ ] T059 [US3] Create Zod schema for generate-custom parameters in src/tools/generate-custom.ts
-- [ ] T060 [US3] Implement generate-custom MCP tool handler in src/tools/generate-custom.ts (pattern validation, CustomGenerator integration, response formatting)
-- [ ] T061 [US3] Register generate-custom tool in src/server.ts
-- [ ] T062 [US3] Add error handling for invalid patterns and unsupported pattern types
-- [ ] T063 [US3] Add logging for custom pattern generation operations
+- [X] T053 [P] [US3] Create pattern validation utilities in src/utils/validators.ts (validateRegexPattern, validateEnumPattern, validateFormatPattern, validateRangePattern)
+- [X] T054 [US3] Implement regex pattern generator in src/generators/custom-generator.ts (uses RandExp or faker helpers for regex matching)
+- [X] T055 [US3] Implement enum pattern generator in src/generators/custom-generator.ts (random selection from array)
+- [X] T056 [US3] Implement format pattern generator in src/generators/custom-generator.ts (template parsing with placeholders)
+- [X] T057 [US3] Implement range pattern generator in src/generators/custom-generator.ts (numeric ranges with proper distribution)
+- [X] T058 [US3] Create CustomGenerator class in src/generators/custom-generator.ts (extends BaseGenerator, orchestrates all pattern types)
+- [X] T059 [US3] Create Zod schema for generate-custom parameters in src/tools/generate-custom.ts
+- [X] T060 [US3] Implement generate-custom MCP tool handler in src/tools/generate-custom.ts (pattern validation, CustomGenerator integration, response formatting)
+- [X] T061 [US3] Register generate-custom tool in src/server.ts
+- [X] T062 [US3] Add error handling for invalid patterns and unsupported pattern types
+- [X] T063 [US3] Add logging for custom pattern generation operations
 
 **Checkpoint**: All user stories should now be independently functional - basic data, datasets, and custom patterns all work
 

@@ -11,6 +11,7 @@ import { FakerMCPServer } from './server.js';
 import { generatePersonTool, handleGeneratePerson } from './tools/generate-person.js';
 import { generateCompanyTool, handleGenerateCompany } from './tools/generate-company.js';
 import { generateDatasetTool, handleGenerateDataset } from './tools/generate-dataset.js';
+import { generateCustomTool, handleGenerateCustom } from './tools/generate-custom.js';
 
 async function main() {
   try {
@@ -25,6 +26,9 @@ async function main() {
       await Promise.resolve();
       return handleGenerateDataset(args);
     });
+
+    // Register User Story 3 tool: generate-custom
+    server.registerTool(generateCustomTool, handleGenerateCustom);
 
     await server.start();
 
