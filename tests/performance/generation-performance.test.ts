@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { PersonGenerator } from '../../src/generators/person-generator.js';
 import { CompanyGenerator } from '../../src/generators/company-generator.js';
 import { DatasetGenerator } from '../../src/generators/dataset-generator.js';
-import { EntityType, SupportedLocale } from '../../src/types/schema.js';
+import { EntityType, RelationshipType, SupportedLocale } from '../../src/types/schema.js';
 
 describe('Generation Performance Benchmarks', () => {
   describe('Person Generation Performance', () => {
@@ -91,7 +91,7 @@ describe('Generation Performance Benchmarks', () => {
             relationships: {
               userId: {
                 references: 'users',
-                type: 'one-to-many',
+                type: RelationshipType.ONE_TO_MANY,
               },
             },
           },
@@ -126,11 +126,11 @@ describe('Generation Performance Benchmarks', () => {
             relationships: {
               userId: {
                 references: 'users',
-                type: 'one-to-many',
+                type: RelationshipType.ONE_TO_MANY,
               },
               companyId: {
                 references: 'companies',
-                type: 'one-to-many',
+                type: RelationshipType.ONE_TO_MANY,
               },
             },
           },

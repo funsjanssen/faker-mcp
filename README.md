@@ -508,7 +508,14 @@ The server follows MCP standard error response format. Common errors include:
 
 ### Claude Desktop
 
-Add to `claude_desktop_config.json`:
+Claude Desktop is an AI assistant application that supports MCP servers for extended functionality.
+
+**Configuration File Locations**:
+- **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+- **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+**Configuration**:
 
 ```json
 {
@@ -521,13 +528,36 @@ Add to `claude_desktop_config.json`:
 }
 ```
 
-### Cline (VS Code Extension)
-
-Add to MCP settings in VS Code:
+**Alternative (using installed global package)**:
 
 ```json
 {
   "mcpServers": {
+    "faker": {
+      "command": "faker-mcp-server",
+      "args": []
+    }
+  }
+}
+```
+
+**After configuration**: Restart Claude Desktop. You can verify the connection by asking "What MCP tools are available?"
+
+---
+
+### Cline (VS Code Extension)
+
+Cline is a VS Code extension that brings AI assistance directly into your editor with MCP support.
+
+**Setup Steps**:
+
+1. Install the Cline extension from VS Code Marketplace
+2. Open VS Code Settings (JSON) - Press `Cmd/Ctrl + Shift + P` → "Preferences: Open User Settings (JSON)"
+3. Add the MCP server configuration:
+
+```json
+{
+  "cline.mcpServers": {
     "faker": {
       "command": "npx",
       "args": ["faker-mcp-server"],
@@ -537,24 +567,257 @@ Add to MCP settings in VS Code:
 }
 ```
 
-### Custom MCP Client
+**Alternative (workspace-specific configuration)**:
 
-For any MCP-compatible client, use:
-- **Command**: `npx faker-mcp-server` (or full path to installed binary)
-- **Transport**: stdio (standard input/output)
-- **Protocol**: MCP (Model Context Protocol)
+Create or edit `.vscode/settings.json` in your project:
 
-Example configuration:
 ```json
 {
-  "command": "/path/to/node_modules/.bin/faker-mcp-server",
-  "args": [],
+  "cline.mcpServers": {
+    "faker": {
+      "command": "npx",
+      "args": ["faker-mcp-server"],
+      "transport": "stdio"
+    }
+  }
+}
+```
+
+**After configuration**: Reload VS Code window or restart Cline extension.
+
+---
+
+### Continue (VS Code Extension)
+
+Continue is an open-source AI code assistant for VS Code with MCP support.
+
+**Configuration File Location**: `~/.continue/config.json` (or workspace-specific `.continue/config.json`)
+
+**Configuration**:
+
+```json
+{
+  "mcpServers": [
+    {
+      "name": "faker",
+      "command": "npx",
+      "args": ["faker-mcp-server"],
+      "transport": "stdio"
+    }
+  ]
+}
+```
+
+**After configuration**: Restart the Continue extension or reload VS Code.
+
+---
+
+### Zed Editor
+
+Zed is a high-performance code editor with built-in AI and MCP support.
+
+**Configuration File Location**: `~/.config/zed/settings.json`
+
+**Configuration**:
+
+```json
+{
+  "context_servers": {
+    "faker-mcp-server": {
+      "command": "npx",
+      "args": ["faker-mcp-server"]
+    }
+  }
+}
+```
+
+**After configuration**: Restart Zed editor.
+
+---
+
+### MCP Inspector (Development/Testing)
+
+MCP Inspector is an official debugging tool for testing MCP servers during development.
+
+**Usage**:
+
+```bash
+# Install MCP Inspector globally
+npm install -g @modelcontextprotocol/inspector
+
+# Run with Faker MCP Server
+mcp-inspector npx faker-mcp-server
+```
+
+This will open a web interface at `http://localhost:5173` where you can:
+- Discover all available tools
+- Test tool calls with custom parameters
+- View request/response logs
+- Validate MCP protocol compliance
+
+---
+
+### Custom MCP Client (Generic Integration)
+
+For any MCP-compatible client not listed above, use these configuration parameters:
+
+**Connection Parameters**:
+- **Command**: `npx faker-mcp-server` (or `faker-mcp-server` if installed globally)
+- **Transport**: `stdio` (standard input/output)
+- **Protocol**: MCP (Model Context Protocol)
+- **Environment**: Node.js 18+ required
+
+**Generic JSON Configuration**:
+
+```json
+{
+  "command": "npx",
+  "args": ["faker-mcp-server"],
   "transport": "stdio",
   "env": {
     "NODE_ENV": "production"
   }
 }
 ```
+
+**Using Absolute Path** (when npx is not available):
+
+```json
+{
+  "command": "/usr/local/bin/faker-mcp-server",
+  "args": [],
+  "transport": "stdio"
+}
+```
+
+**With Custom Node Path**:
+
+```json
+{
+  "command": "/usr/local/bin/node",
+  "args": ["/path/to/node_modules/.bin/faker-mcp-server"],
+  "transport": "stdio",
+  "env": {
+    "NODE_ENV": "production",
+    "NODE_OPTIONS": "--max-old-space-size=512"
+  }
+}
+```
+
+---
+
+### Docker Container
+
+For containerized environments or CI/CD pipelines:
+
+**Dockerfile**:
+
+```dockerfile
+FROM node:18-alpine
+RUN npm install -g faker-mcp-server
+CMD ["faker-mcp-server"]
+```
+
+**Build and Run**:
+
+```bash
+docker build -t faker-mcp-server .
+docker run -i faker-mcp-server
+```
+
+**Docker Compose** (for integration with other services):
+
+```yaml
+version: '3.8'
+services:
+  faker-mcp:
+    image: node:18-alpine
+    command: npx faker-mcp-server
+    stdin_open: true
+    tty: true
+```
+
+---
+
+### Programmatic Usage (Node.js)
+
+You can also use the MCP server programmatically in your Node.js applications:
+
+```javascript
+import { spawn } from 'child_process';
+
+// Start the MCP server process
+const mcpServer = spawn('npx', ['faker-mcp-server'], {
+  stdio: ['pipe', 'pipe', 'inherit']
+});
+
+// Send MCP request to generate person data
+const request = {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'tools/call',
+  params: {
+    name: 'generate-person',
+    arguments: {
+      count: 5,
+      locale: 'en',
+      seed: 12345
+    }
+  }
+};
+
+mcpServer.stdin.write(JSON.stringify(request) + '\n');
+
+// Read response
+mcpServer.stdout.on('data', (data) => {
+  const response = JSON.parse(data.toString());
+  console.log('Generated data:', response.result);
+});
+```
+
+---
+
+### Configuration Troubleshooting
+
+**Problem**: "Command not found: faker-mcp-server"
+
+**Solutions**:
+- Use `npx faker-mcp-server` instead of `faker-mcp-server`
+- Install globally first: `npm install -g faker-mcp-server`
+- Use absolute path to the binary
+
+**Problem**: "MCP server connection timeout"
+
+**Solutions**:
+- Verify Node.js 18+ is installed: `node --version`
+- Check if server starts manually: `npx faker-mcp-server`
+- Review client logs for specific error messages
+- Ensure no firewall/antivirus blocking Node.js processes
+
+**Problem**: "Invalid JSON response from server"
+
+**Solutions**:
+- Ensure transport is set to `stdio` (not `http` or `sse`)
+- Check Node.js version compatibility (requires 18+)
+- Verify no other process is using stdio streams
+
+---
+
+### Platform-Specific Notes
+
+**macOS**:
+- Configuration files typically in `~/Library/Application Support/`
+- Use Homebrew for Node.js: `brew install node@18`
+
+**Windows**:
+- Configuration files typically in `%APPDATA%\` or `%USERPROFILE%\.config\`
+- Use Node.js installer from nodejs.org or `nvm-windows`
+- Use forward slashes or escaped backslashes in JSON paths
+
+**Linux**:
+- Configuration files typically in `~/.config/`
+- Use nvm for Node.js version management
+- Ensure execute permissions: `chmod +x /path/to/faker-mcp-server`
 
 ---
 
