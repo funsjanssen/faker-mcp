@@ -10,6 +10,7 @@
 import { FakerMCPServer } from './server.js';
 import { generatePersonTool, handleGeneratePerson } from './tools/generate-person.js';
 import { generateCompanyTool, handleGenerateCompany } from './tools/generate-company.js';
+import { generateDatasetTool, handleGenerateDataset } from './tools/generate-dataset.js';
 
 async function main() {
   try {
@@ -18,6 +19,12 @@ async function main() {
     // Register User Story 1 tools: generate-person and generate-company
     server.registerTool(generatePersonTool, handleGeneratePerson);
     server.registerTool(generateCompanyTool, handleGenerateCompany);
+
+    // Register User Story 2 tool: generate-dataset
+    server.registerTool(generateDatasetTool, async (args) => {
+      await Promise.resolve();
+      return handleGenerateDataset(args);
+    });
 
     await server.start();
 

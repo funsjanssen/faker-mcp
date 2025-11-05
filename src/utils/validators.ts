@@ -81,3 +81,159 @@ export function isValidRegex(pattern: string): boolean {
 export function isNonEmptyArray<T>(arr: T[]): boolean {
   return Array.isArray(arr) && arr.length > 0;
 }
+
+/**
+ * Validates a dataset schema
+ */
+export function validateDatasetSchema(schema: {
+  entities: Record<
+    string,
+    {
+      count: number;
+      type: string;
+      fields?: string[];
+      relationships?: Record<
+        string,
+        {
+          references: string;
+          type: string;
+          nullable?: boolean;
+        }
+      >;
+    }
+  >;
+}): { valid: boolean; errors: string[] } {
+  const errors: string[] = [];
+
+  // Check if entities object is empty
+  if (Object.keys(schema.entities).length === 0) {
+    errors.push('Schema must contain at least one entity');
+    return { valid: false, errors };
+  }
+
+  // Validate each entity
+  for (const [entityName, entity] of Object.entries(schema.entities)) {
+    // Validate entity count
+    const countValidation = validateEntityCount(entity.count);
+    if (!countValidation.valid) {
+      errors.push(`Entity '${entityName}': ${countValidation.error}`);
+    }
+
+    // Validate custom entities have fields
+    if (entity.type === 'custom' && (!entity.fields || entity.fields.length === 0)) {
+      errors.push(`Custom entity '${entityName}' must have fields defined`);
+    }
+
+    // Validate relationships reference existing entities
+    if (entity.relationships) {
+      for (const [fieldName, relationship] of Object.entries(entity.relationships)) {
+        if (!schema.entities[relationship.references]) {
+          errors.push(
+            `Entity '${entityName}' field '${fieldName}' references non-existent entity '${relationship.references}'`
+          );
+        }
+      }
+    }
+  }
+
+  // Check for circular dependencies
+  const circularDeps = detectCircularDependencies(schema);
+  if (circularDeps.length > 0) {
+    errors.push(`Circular dependencies detected: ${circularDeps.join(', ')}`);
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+  };
+}
+
+/**
+ * Detects circular dependencies in entity relationships
+ */
+export function detectCircularDependencies(schema: {
+  entities: Record<
+    string,
+    {
+      relationships?: Record<
+        string,
+        {
+          references: string;
+          nullable?: boolean;
+        }
+      >;
+    }
+  >;
+}): string[] {
+  const circularPaths: string[] = [];
+
+  // Build dependency graph
+  const graph = new Map<string, string[]>();
+  for (const [entityName, entity] of Object.entries(schema.entities)) {
+    const dependencies: string[] = [];
+    if (entity.relationships) {
+      for (const relationship of Object.values(entity.relationships)) {
+        // Skip self-references if nullable (allowed)
+        if (relationship.references === entityName && relationship.nullable) {
+          continue;
+        }
+        dependencies.push(relationship.references);
+      }
+    }
+    graph.set(entityName, dependencies);
+  }
+
+  // Detect cycles using DFS
+  const visited = new Set<string>();
+  const recursionStack = new Set<string>();
+
+  function dfs(node: string, path: string[]): boolean {
+    visited.add(node);
+    recursionStack.add(node);
+    path.push(node);
+
+    const neighbors = graph.get(node) || [];
+    for (const neighbor of neighbors) {
+      if (!visited.has(neighbor)) {
+        if (dfs(neighbor, [...path])) {
+          return true;
+        }
+      } else if (recursionStack.has(neighbor)) {
+        // Found a cycle
+        const cyclePath = [...path, neighbor];
+        circularPaths.push(cyclePath.join(' -> '));
+        return true;
+      }
+    }
+
+    recursionStack.delete(node);
+    return false;
+  }
+
+  for (const entityName of Object.keys(schema.entities)) {
+    if (!visited.has(entityName)) {
+      dfs(entityName, []);
+    }
+  }
+
+  return circularPaths;
+}
+
+/**
+ * Validates entity count is within allowed range (1-10000)
+ */
+export function validateEntityCount(count: number): { valid: boolean; error?: string } {
+  if (!Number.isInteger(count)) {
+    return { valid: false, error: 'Count must be an integer' };
+  }
+
+  if (count < 1) {
+    return { valid: false, error: 'Count must be at least 1' };
+  }
+
+  if (count > 10000) {
+    return { valid: false, error: 'Count must not exceed 10000' };
+  }
+
+  return { valid: true };
+}

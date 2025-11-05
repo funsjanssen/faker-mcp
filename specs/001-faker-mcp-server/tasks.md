@@ -23,18 +23,18 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project directory structure with src/, tests/, and config directories per plan.md
-- [ ] T002 Initialize Node.js project with package.json (type: module, engines: node >=18)
-- [ ] T003 Install core dependencies: @modelcontextprotocol/sdk, @faker-js/faker, zod, zod-to-json-schema
-- [ ] T004 Install dev dependencies: vite, vitest, typescript, @types/node, eslint, prettier
-- [ ] T005 [P] Create tsconfig.json with strict mode enabled and ES2022 target
-- [ ] T006 [P] Create vite.config.ts for library mode with Node.js 18 target
-- [ ] T007 [P] Create .eslintrc.json with TypeScript rules
-- [ ] T008 [P] Create .prettierrc for code formatting
-- [ ] T009 [P] Create .gitignore for Node.js project
-- [ ] T010 Setup package.json scripts: build, dev, test, lint, format
-- [ ] T011 [P] Setup husky for git hooks (pre-commit: lint + test)
-- [ ] T012 [P] Create README.md with installation and basic usage instructions
+- [X] T001 Create project directory structure with src/, tests/, and config directories per plan.md
+- [X] T002 Initialize Node.js project with package.json (type: module, engines: node >=18)
+- [X] T003 Install core dependencies: @modelcontextprotocol/sdk, @faker-js/faker, zod, zod-to-json-schema
+- [X] T004 Install dev dependencies: vite, vitest, typescript, @types/node, eslint, prettier
+- [X] T005 [P] Create tsconfig.json with strict mode enabled and ES2022 target
+- [X] T006 [P] Create vite.config.ts for library mode with Node.js 18 target
+- [X] T007 [P] Create .eslintrc.json with TypeScript rules
+- [X] T008 [P] Create .prettierrc for code formatting
+- [X] T009 [P] Create .gitignore for Node.js project
+- [X] T010 Setup package.json scripts: build, dev, test, lint, format
+- [X] T011 [P] Setup husky for git hooks (pre-commit: lint + test)
+- [X] T012 [P] Create README.md with installation and basic usage instructions
 
 ---
 
@@ -46,31 +46,31 @@
 
 ### Core Type Definitions
 
-- [ ] T013 [P] Create TypeScript enums in src/types/schema.ts (EntityType, RelationshipType, PatternType, SupportedLocale)
-- [ ] T014 [P] Create request types in src/types/requests.ts (GenerationRequestParams, PersonRequestParams, CompanyRequestParams)
-- [ ] T015 [P] Create response types in src/types/responses.ts (GenerationResponse, PersonData, CompanyData, GeneratedDataset)
-- [ ] T016 [P] Create schema types in src/types/schema.ts (DatasetSchema, EntityDefinition, CustomPattern, SeedConfiguration)
+- [X] T013 [P] Create TypeScript enums in src/types/schema.ts (EntityType, RelationshipType, PatternType, SupportedLocale)
+- [X] T014 [P] Create request types in src/types/requests.ts (GenerationRequestParams, PersonRequestParams, CompanyRequestParams)
+- [X] T015 [P] Create response types in src/types/responses.ts (GenerationResponse, PersonData, CompanyData, GeneratedDataset)
+- [X] T016 [P] Create schema types in src/types/schema.ts (DatasetSchema, EntityDefinition, CustomPattern, SeedConfiguration)
 
 ### Utilities
 
-- [ ] T017 [P] Implement seed manager in src/utils/seed-manager.ts (seed generation, string hashing, validation)
-- [ ] T018 [P] Create Zod validators in src/utils/validators.ts (email, phone, URL, date validation helpers)
+- [X] T017 [P] Implement seed manager in src/utils/seed-manager.ts (seed generation, string hashing, validation)
+- [X] T018 [P] Create Zod validators in src/utils/validators.ts (email, phone, URL, date validation helpers)
 
 ### Base Generator
 
-- [ ] T019 Create abstract BaseGenerator class in src/generators/base-generator.ts (faker instance management, seed handling, locale setup)
+- [X] T019 Create abstract BaseGenerator class in src/generators/base-generator.ts (faker instance management, seed handling, locale setup)
 
 ### MCP Server Infrastructure
 
-- [ ] T020 Create MCP Server class in src/server.ts (tool registration, request handling, error handling with MCP error codes)
-- [ ] T021 Create MCP server entry point in src/index.ts (stdio transport setup, server initialization, error handling)
-- [ ] T022 Add bin configuration to package.json pointing to dist/index.js
+- [X] T020 Create MCP Server class in src/server.ts (tool registration, request handling, error handling with MCP error codes)
+- [X] T021 Create MCP server entry point in src/index.ts (stdio transport setup, server initialization, error handling)
+- [X] T022 Add bin configuration to package.json pointing to dist/index.js
 
 ### Testing Infrastructure
 
-- [ ] T023 [P] Create vitest.config.ts with TypeScript support and coverage settings
-- [ ] T024 [P] Create test utilities in tests/helpers/test-utils.ts (faker instance mocking, assertion helpers)
-- [ ] T025 Write MCP protocol compliance test in tests/contract/mcp-protocol.test.ts (server initialization, tool discovery, error response formats)
+- [X] T023 [P] Create vitest.config.ts with TypeScript support and coverage settings
+- [X] T024 [P] Create test utilities in tests/helpers/test-utils.ts (faker instance mocking, assertion helpers)
+- [X] T025 Write MCP protocol compliance test in tests/contract/mcp-protocol.test.ts (server initialization, tool discovery, error response formats)
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -86,22 +86,22 @@
 
 > **NOTE: Write these tests FIRST, ensure they FAIL before implementation**
 
-- [ ] T026 [P] [US1] Write contract test for generate-person tool in tests/contract/generate-person.test.ts (validate input schema, output format, seed reproducibility)
-- [ ] T027 [P] [US1] Write contract test for generate-company tool in tests/contract/generate-company.test.ts (validate input schema, output format, seed reproducibility)
-- [ ] T028 [P] [US1] Write unit tests for PersonGenerator in tests/unit/generators/person-generator.test.ts (field generation, locale handling, optional fields)
-- [ ] T029 [P] [US1] Write unit tests for CompanyGenerator in tests/unit/generators/company-generator.test.ts (field generation, locale handling, optional fields)
+- [X] T026 [P] [US1] Write contract test for generate-person tool in tests/contract/generate-person.test.ts (validate input schema, output format, seed reproducibility)
+- [X] T027 [P] [US1] Write contract test for generate-company tool in tests/contract/generate-company.test.ts (validate input schema, output format, seed reproducibility)
+- [X] T028 [P] [US1] Write unit tests for PersonGenerator in tests/unit/generators/person-generator.test.ts (field generation, locale handling, optional fields)
+- [X] T029 [P] [US1] Write unit tests for CompanyGenerator in tests/unit/generators/company-generator.test.ts (field generation, locale handling, optional fields)
 
 ### Implementation for User Story 1
 
-- [ ] T030 [P] [US1] Create PersonGenerator class in src/generators/person-generator.ts (extends BaseGenerator, generates PersonData with all fields)
-- [ ] T031 [P] [US1] Create CompanyGenerator class in src/generators/company-generator.ts (extends BaseGenerator, generates CompanyData with all fields)
-- [ ] T032 [US1] Create Zod schema for generate-person parameters in src/tools/generate-person.ts
-- [ ] T033 [US1] Implement generate-person MCP tool handler in src/tools/generate-person.ts (parameter validation, PersonGenerator integration, response formatting)
-- [ ] T034 [US1] Create Zod schema for generate-company parameters in src/tools/generate-company.ts
-- [ ] T035 [US1] Implement generate-company MCP tool handler in src/tools/generate-company.ts (parameter validation, CompanyGenerator integration, response formatting)
-- [ ] T036 [US1] Register generate-person and generate-company tools in src/server.ts
-- [ ] T037 [US1] Add error handling for invalid locales and parameter validation in both tools
-- [ ] T038 [US1] Add logging for person and company generation operations in both tools
+- [X] T030 [P] [US1] Create PersonGenerator class in src/generators/person-generator.ts (extends BaseGenerator, generates PersonData with all fields)
+- [X] T031 [P] [US1] Create CompanyGenerator class in src/generators/company-generator.ts (extends BaseGenerator, generates CompanyData with all fields)
+- [X] T032 [US1] Create Zod schema for generate-person parameters in src/tools/generate-person.ts
+- [X] T033 [US1] Implement generate-person MCP tool handler in src/tools/generate-person.ts (parameter validation, PersonGenerator integration, response formatting)
+- [X] T034 [US1] Create Zod schema for generate-company parameters in src/tools/generate-company.ts
+- [X] T035 [US1] Implement generate-company MCP tool handler in src/tools/generate-company.ts (parameter validation, CompanyGenerator integration, response formatting)
+- [X] T036 [US1] Register generate-person and generate-company tools in src/server.ts
+- [X] T037 [US1] Add error handling for invalid locales and parameter validation in both tools
+- [X] T038 [US1] Add logging for person and company generation operations in both tools
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - can generate person and company data independently
 
@@ -115,20 +115,20 @@
 
 ### Tests for User Story 2
 
-- [ ] T039 [P] [US2] Write contract test for generate-dataset tool in tests/contract/generate-dataset.test.ts (schema validation, referential integrity, multi-entity support)
-- [ ] T040 [P] [US2] Write unit tests for DatasetGenerator in tests/unit/generators/dataset-generator.test.ts (entity ordering, FK generation, relationship types)
-- [ ] T041 [P] [US2] Write unit tests for schema validator in tests/unit/utils/validators.test.ts (circular dependency detection, entity count validation)
+- [X] T039 [P] [US2] Write contract test for generate-dataset tool in tests/contract/generate-dataset.test.ts (schema validation, referential integrity, multi-entity support)
+- [X] T040 [P] [US2] Write unit tests for DatasetGenerator in tests/unit/generators/dataset-generator.test.ts (entity ordering, FK generation, relationship types)
+- [X] T041 [P] [US2] Write unit tests for schema validator in tests/unit/utils/validators.test.ts (circular dependency detection, entity count validation)
 
 ### Implementation for User Story 2
 
-- [ ] T042 [US2] Create schema validation utilities in src/utils/validators.ts (validateDatasetSchema, detectCircularDependencies, validateEntityCounts)
-- [ ] T043 [US2] Implement ID pool management in src/generators/dataset-generator.ts (generateEntityId, trackEntityIds, selectForeignKeyValue)
-- [ ] T044 [US2] Create DatasetGenerator class in src/generators/dataset-generator.ts (extends BaseGenerator, multi-entity generation, relationship handling)
-- [ ] T045 [US2] Create Zod schema for generate-dataset parameters in src/tools/generate-dataset.ts
-- [ ] T046 [US2] Implement generate-dataset MCP tool handler in src/tools/generate-dataset.ts (schema validation, DatasetGenerator integration, response formatting)
-- [ ] T047 [US2] Register generate-dataset tool in src/server.ts
-- [ ] T048 [US2] Add error handling for schema validation failures and circular dependencies
-- [ ] T049 [US2] Add logging for dataset generation operations with entity counts
+- [X] T042 [US2] Create schema validation utilities in src/utils/validators.ts (validateDatasetSchema, detectCircularDependencies, validateEntityCounts)
+- [X] T043 [US2] Implement ID pool management in src/generators/dataset-generator.ts (generateEntityId, trackEntityIds, selectForeignKeyValue)
+- [X] T044 [US2] Create DatasetGenerator class in src/generators/dataset-generator.ts (extends BaseGenerator, multi-entity generation, relationship handling)
+- [X] T045 [US2] Create Zod schema for generate-dataset parameters in src/tools/generate-dataset.ts
+- [X] T046 [US2] Implement generate-dataset MCP tool handler in src/tools/generate-dataset.ts (schema validation, DatasetGenerator integration, response formatting)
+- [X] T047 [US2] Register generate-dataset tool in src/server.ts
+- [X] T048 [US2] Add error handling for schema validation failures and circular dependencies
+- [X] T049 [US2] Add logging for dataset generation operations with entity counts
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently - can generate basic data and complex datasets
 
