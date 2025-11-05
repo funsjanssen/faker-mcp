@@ -133,7 +133,7 @@ MIT
 
 ## Author
 
-[Your Name]
+Funs Janssen
 
 ## Contributing
 
