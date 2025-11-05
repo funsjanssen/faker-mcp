@@ -1,6 +1,6 @@
 {
   "name": "faker-mcp-server",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Model Context Protocol (MCP) server for generating fake/mock data using Faker.js",
   "type": "module",
   "main": "./dist/index.js",

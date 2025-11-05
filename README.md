@@ -2,6 +2,8 @@
 
 A Model Context Protocol (MCP) server that provides fake/mock data generation capabilities using the Faker.js library. Generate realistic test data for database seeding, API testing, demo applications, and development environments.
 
+Read more about why and when to use this MCP server in my [blog post](https://www.fjan.nl/en/posts/why-and-when-to-use-the-faker-mcp-server-inside-ai-agents-like-github-copilot).
+
 ## Features
 
 - **Basic Data Generation**: Generate realistic person and company data with names, emails, addresses, and contact information
