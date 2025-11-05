@@ -168,8 +168,8 @@
 
 **Purpose**: Improvements that affect multiple user stories and finalize the project
 
-- [ ] T064 [P] Write integration test for full MCP server lifecycle in tests/integration/server.test.ts (server start, multiple tool calls, concurrent requests)
-- [ ] T065 [P] Write performance benchmarks in tests/performance/generation-performance.test.ts (1k, 5k, 10k records, memory usage)
+- [X] T064 [P] Write integration test for full MCP server lifecycle in tests/integration/server.test.ts (server start, multiple tool calls, concurrent requests)
+- [X] T065 [P] Write performance benchmarks in tests/performance/generation-performance.test.ts (1k, 5k, 10k records, memory usage)
 - [ ] T066 [P] Add comprehensive JSDoc comments to all exported classes and functions across src/
 - [ ] T067 [P] Create CHANGELOG.md with version 1.0.0 release notes
 - [ ] T068 [P] Update README.md with complete API documentation, examples from contracts/mcp-tools.md, and quickstart guide

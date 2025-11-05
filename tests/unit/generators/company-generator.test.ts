@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { CompanyGenerator } from '../../../src/generators/company-generator.js';
-import { SupportedLocale } from '../../../src/types/schema.js';
-import { assertions } from '../../helpers/test-utils.js';
+import { CompanyGenerator } from '../../../src/generators/company-generator';
+import { SupportedLocale } from '../../../src/types/schema';
+import { assertions } from '../../helpers/test-utils';
 
 describe('CompanyGenerator', () => {
   describe('Basic Generation', () => {

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { PersonGenerator } from '../../../src/generators/person-generator.js';
+import { PersonGenerator } from '../../../src/generators/person-generator';
 import { SupportedLocale } from '../../../src/types/schema.js';
-import { assertions } from '../../helpers/test-utils.js';
+import { assertions } from '../../helpers/test-utils';
 
 describe('PersonGenerator', () => {
   describe('Basic Generation', () => {
