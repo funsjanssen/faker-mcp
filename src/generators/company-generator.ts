@@ -2,26 +2,88 @@ import { BaseGenerator, BaseGeneratorOptions } from './base-generator.js';
 import { CompanyData } from '../types/responses.js';
 
 /**
- * Options for company generation
+ * Options for controlling company data generation.
+ *
+ * @interface CompanyGenerationOptions
+ * @example
+ * ```typescript
+ * const options: CompanyGenerationOptions = {
+ *   includeAddress: true,
+ *   includeWebsite: true,
+ *   includeFoundedYear: true,
+ *   includeEmployeeCount: true
+ * };
+ * ```
  */
 export interface CompanyGenerationOptions {
+  /** Whether to include address information (defaults to true) */
   includeAddress?: boolean;
+  /** Whether to include phone number (defaults to true) */
   includePhone?: boolean;
+  /** Whether to include website URL (defaults to true) */
   includeWebsite?: boolean;
+  /** Whether to include founded year (defaults to false) */
   includeFoundedYear?: boolean;
+  /** Whether to include employee count (defaults to false) */
   includeEmployeeCount?: boolean;
 }
 
 /**
- * Generator for company data
+ * Generator for realistic company data.
+ * Generates company records with names, industries, contact information, addresses, and business details.
+ * Supports multiple locales and reproducible generation via seeds.
+ *
+ * @class CompanyGenerator
+ * @extends BaseGenerator
+ * @example
+ * ```typescript
+ * const generator = new CompanyGenerator({
+ *   locale: SupportedLocale.EN,
+ *   seed: 12345
+ * });
+ *
+ * // Generate a single company
+ * const company = generator.generate({
+ *   includeAddress: true,
+ *   includeWebsite: true,
+ *   includeFoundedYear: true
+ * });
+ *
+ * // Generate multiple companies
+ * const companies = generator.generateMany(50, {
+ *   includeEmployeeCount: true
+ * });
+ * ```
  */
 export class CompanyGenerator extends BaseGenerator {
+  /**
+   * Creates a new CompanyGenerator instance.
+   *
+   * @constructor
+   * @param {BaseGeneratorOptions} [options={}] - Generator configuration options
+   * @example
+   * ```typescript
+   * const generator = new CompanyGenerator({
+   *   locale: SupportedLocale.DE,
+   *   seed: 12345
+   * });
+   * ```
+   */
   constructor(options: BaseGeneratorOptions = {}) {
     super(options);
   }
 
   /**
-   * Get industry name - with fallback for locales that don't support buzzNoun
+   * Gets an industry name with locale-specific fallback.
+   * Uses buzzNoun if available in the locale, otherwise falls back to generic industries.
+   *
+   * @private
+   * @returns {string} An industry name
+   * @example
+   * ```typescript
+   * const industry = this.getIndustry();
+   * // Returns: 'Technology', 'Finance', 'Manufacturing', etc.
+   * ```
    */
   private getIndustry(): string {
     try {
@@ -45,7 +107,30 @@ export class CompanyGenerator extends BaseGenerator {
   }
 
   /**
-   * Generate a single company record
+   * Generates a single company record with complete business information.
+   *
+   * @param {CompanyGenerationOptions} [options={}] - Options controlling which fields to include
+   * @returns {CompanyData} A company data object
+   * @example
+   * ```typescript
+   * const company = generator.generate({
+   *   includeAddress: true,
+   *   includeWebsite: true,
+   *   includeFoundedYear: true,
+   *   includeEmployeeCount: true
+   * });
+   * // Returns: {
+   * //   id: 'company_12345_0',
+   * //   name: 'Acme Corporation',
+   * //   industry: 'Technology',
+   * //   email: 'acme@contact.com',
+   * //   phone: '+1-555-987-6543',
+   * //   website: 'https://acme.com',
+   * //   founded: 1995,
+   * //   employeeCount: 150,
+   * //   address: { ... }
+   * // }
+   * ```
    */
   public generate(options: CompanyGenerationOptions = {}): CompanyData {
     const {
@@ -123,7 +208,23 @@ export class CompanyGenerator extends BaseGenerator {
   }
 
   /**
-   * Generate multiple company records
+   * Generates multiple company records efficiently.
+   * Uses batch processing for large datasets to optimize memory usage.
+   * Employee counts are weighted toward smaller companies (realistic distribution).
+   *
+   * @param {number} count - Number of company records to generate
+   * @param {CompanyGenerationOptions} [options={}] - Options controlling which fields to include
+   * @returns {CompanyData[]} Array of company data objects
+   * @example
+   * ```typescript
+   * const companies = generator.generateMany(100, {
+   *   includeAddress: true,
+   *   includeWebsite: true,
+   *   includeFoundedYear: true,
+   *   includeEmployeeCount: true
+   * });
+   * console.log(`Generated ${companies.length} companies`);
+   * ```
    */
   public generateMany(count: number, options: CompanyGenerationOptions = {}): CompanyData[] {
     return this.batchGenerate(count, (index) => {

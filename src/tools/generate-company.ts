@@ -5,7 +5,11 @@ import { CompanyGenerator } from '../generators/company-generator.js';
 import { SupportedLocale } from '../types/schema.js';
 
 /**
- * Zod schema for generate-company parameters
+ * Zod validation schema for generate-company tool parameters.
+ * Defines and validates all input parameters for company generation.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 export const GenerateCompanySchema = z.object({
   count: z.number().min(1).max(10000).default(1).describe('Number of company records to generate'),
@@ -21,10 +25,22 @@ export const GenerateCompanySchema = z.object({
   includeEmployeeCount: z.boolean().default(false).describe('Whether to include employee count'),
 });
 
+/**
+ * Type definition for generate-company parameters, inferred from Zod schema.
+ *
+ * @typedef {z.infer<typeof GenerateCompanySchema>} GenerateCompanyParams
+ */
 export type GenerateCompanyParams = z.infer<typeof GenerateCompanySchema>;
 
 /**
- * MCP Tool definition for generate-company
+ * MCP Tool definition for company data generation.
+ * Provides tool metadata and input schema for MCP clients.
+ *
+ * @constant
+ * @type {Tool}
+ * @property {string} name - Tool identifier
+ * @property {string} description - Human-readable tool description
+ * @property {Object} inputSchema - JSON Schema for tool inputs
  */
 export const generateCompanyTool: Tool = {
   name: 'generate-company',
@@ -34,7 +50,23 @@ export const generateCompanyTool: Tool = {
 };
 
 /**
- * Handler for generate-company tool
+ * Handler function for the generate-company MCP tool.
+ * Validates inputs, generates company data, and returns formatted MCP response.
+ *
+ * @async
+ * @param {unknown} args - Raw arguments from MCP client (validated against schema)
+ * @returns {Promise<{ content: unknown[] }>} MCP-formatted response with generated data
+ * @throws {Error} If parameter validation fails or generation encounters an error
+ * @example
+ * ```typescript
+ * const result = await handleGenerateCompany({
+ *   count: 25,
+ *   locale: 'en',
+ *   includeAddress: true,
+ *   includeWebsite: true
+ * });
+ * // Returns MCP response with 25 company records
+ * ```
  */
 export function handleGenerateCompany(args: unknown): Promise<{ content: unknown[] }> {
   const startTime = Date.now();

@@ -6,7 +6,10 @@ import { EntityType, RelationshipType, SupportedLocale } from '../types/schema.j
 import { validateDatasetSchema } from '../utils/validators.js';
 
 /**
- * Zod schema for relationship definition
+ * Zod validation schema for relationship definitions within dataset entities.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 const RelationshipDefinitionSchema = z.object({
   references: z.string().min(1, 'Relationship references must be a non-empty string'),
@@ -15,7 +18,10 @@ const RelationshipDefinitionSchema = z.object({
 });
 
 /**
- * Zod schema for entity definition
+ * Zod validation schema for entity definitions within datasets.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 const EntityDefinitionSchema = z.object({
   count: z
@@ -29,7 +35,10 @@ const EntityDefinitionSchema = z.object({
 });
 
 /**
- * Zod schema for dataset schema
+ * Zod validation schema for complete dataset schemas.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 const DatasetSchemaSchema = z.object({
   entities: z
@@ -40,7 +49,10 @@ const DatasetSchemaSchema = z.object({
 });
 
 /**
- * Zod schema for generate-dataset parameters
+ * Zod validation schema for generate-dataset tool parameters.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 export const GenerateDatasetParamsSchema = z.object({
   schema: DatasetSchemaSchema,
@@ -49,12 +61,21 @@ export const GenerateDatasetParamsSchema = z.object({
 });
 
 /**
- * Type for generate-dataset parameters
+ * Type definition for generate-dataset parameters, inferred from Zod schema.
+ *
+ * @typedef {z.infer<typeof GenerateDatasetParamsSchema>} GenerateDatasetParams
  */
 export type GenerateDatasetParams = z.infer<typeof GenerateDatasetParamsSchema>;
 
 /**
- * Tool definition for MCP server
+ * MCP Tool definition for dataset generation with multiple related entities.
+ * Supports complex data scenarios with referential integrity.
+ *
+ * @constant
+ * @type {Tool}
+ * @property {string} name - Tool identifier
+ * @property {string} description - Human-readable tool description
+ * @property {Object} inputSchema - JSON Schema for tool inputs
  */
 export const generateDatasetTool: Tool = {
   name: 'generate-dataset',
@@ -66,7 +87,33 @@ export const generateDatasetTool: Tool = {
 };
 
 /**
- * Generate dataset tool handler
+ * Handler function for the generate-dataset MCP tool.
+ * Validates schema structure, checks referential integrity, generates related entities,
+ * and returns formatted MCP response with complete dataset.
+ *
+ * @param {unknown} params - Raw parameters from MCP client (validated against schema)
+ * @returns {{ content: Array<{ type: string; text: string }> }} MCP-formatted response with dataset
+ * @throws {Error} If schema validation fails, circular dependencies detected, or generation fails
+ * @example
+ * ```typescript
+ * const result = handleGenerateDataset({
+ *   schema: {
+ *     entities: {
+ *       users: { count: 10, type: 'person' },
+ *       orders: {
+ *         count: 50,
+ *         type: 'custom',
+ *         fields: ['amount', 'status'],
+ *         relationships: {
+ *           userId: { references: 'users', type: 'one-to-many' }
+ *         }
+ *       }
+ *     }
+ *   },
+ *   seed: 12345
+ * });
+ * // Returns MCP response with users and orders datasets
+ * ```
  */
 export function handleGenerateDataset(params: unknown) {
   try {

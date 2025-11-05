@@ -7,13 +7,28 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 
 /**
- * MCP Server for fake data generation
+ * MCP (Model Context Protocol) Server for fake data generation.
+ * Manages tool registration, request handling, and server lifecycle.
+ *
+ * @class FakerMCPServer
+ * @example
+ * ```typescript
+ * const server = new FakerMCPServer();
+ * server.registerTool(generatePersonTool, handleGeneratePerson);
+ * await server.start();
+ * ```
  */
 export class FakerMCPServer {
   private server: Server;
   private tools: Map<string, Tool>;
   private toolHandlers: Map<string, (args: unknown) => Promise<{ content: unknown[] }>>;
 
+  /**
+   * Creates a new FakerMCPServer instance with default configuration.
+   * Initializes the MCP server with tool capabilities and sets up request handlers.
+   *
+   * @constructor
+   */
   constructor() {
     this.tools = new Map();
     this.toolHandlers = new Map();
@@ -34,7 +49,26 @@ export class FakerMCPServer {
   }
 
   /**
-   * Register a tool with the server
+   * Registers a tool with the server, making it available for MCP clients.
+   * Tools must be registered before starting the server.
+   *
+   * @param {Tool} tool - The MCP tool definition with name, description, and input schema
+   * @param {Function} handler - Handler function that processes tool requests
+   * @returns {void}
+   * @example
+   * ```typescript
+   * server.registerTool(
+   *   {
+   *     name: 'generate-person',
+   *     description: 'Generates fake person data',
+   *     inputSchema: { ... }
+   *   },
+   *   async (args) => {
+   *     // Handle generation
+   *     return { content: [...] };
+   *   }
+   * );
+   * ```
    */
   public registerTool(
     tool: Tool,
@@ -45,7 +79,11 @@ export class FakerMCPServer {
   }
 
   /**
-   * Setup request handlers
+   * Sets up MCP protocol request handlers for tool listing and execution.
+   * This is called automatically during server construction.
+   *
+   * @private
+   * @returns {void}
    */
   private setupHandlers(): void {
     // List available tools
@@ -75,7 +113,19 @@ export class FakerMCPServer {
   }
 
   /**
-   * Start the server with stdio transport
+   * Starts the server with stdio transport for communication.
+   * The server will listen for MCP requests on stdin/stdout.
+   *
+   * @async
+   * @returns {Promise<void>} Resolves when the server is successfully started
+   * @throws {Error} If server fails to start or connect to transport
+   * @example
+   * ```typescript
+   * const server = new FakerMCPServer();
+   * server.registerTool(myTool, myHandler);
+   * await server.start();
+   * console.log('Server running on stdio');
+   * ```
    */
   public async start(): Promise<void> {
     const transport = new StdioServerTransport();
@@ -83,7 +133,15 @@ export class FakerMCPServer {
   }
 
   /**
-   * Get the underlying MCP server instance
+   * Gets the underlying MCP Server instance.
+   * Useful for advanced configuration or testing.
+   *
+   * @returns {Server} The underlying MCP Server instance
+   * @example
+   * ```typescript
+   * const mcpServer = server.getServer();
+   * // Use for advanced operations or testing
+   * ```
    */
   public getServer(): Server {
     return this.server;

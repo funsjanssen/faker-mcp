@@ -5,7 +5,10 @@ import { CustomGenerator } from '../generators/custom-generator.js';
 import { SupportedLocale, PatternType, type RangePattern } from '../types/schema.js';
 
 /**
- * Zod schema for range pattern
+ * Zod validation schema for range pattern values.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 const RangePatternSchema = z.object({
   min: z.number().describe('Minimum value'),
@@ -14,7 +17,10 @@ const RangePatternSchema = z.object({
 });
 
 /**
- * Zod schema for custom pattern
+ * Zod validation schema for custom pattern definitions.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 const CustomPatternSchema = z.object({
   type: z.nativeEnum(PatternType).describe('Pattern type'),
@@ -24,7 +30,10 @@ const CustomPatternSchema = z.object({
 });
 
 /**
- * Zod schema for generate-custom parameters
+ * Zod validation schema for generate-custom tool parameters.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 export const GenerateCustomSchema = z.object({
   count: z.number().min(1).max(10000).default(1).describe('Number of records to generate'),
@@ -41,10 +50,22 @@ export const GenerateCustomSchema = z.object({
   seed: z.number().optional().describe('Optional seed for reproducible generation'),
 });
 
+/**
+ * Type definition for generate-custom parameters, inferred from Zod schema.
+ *
+ * @typedef {z.infer<typeof GenerateCustomSchema>} GenerateCustomParams
+ */
 export type GenerateCustomParams = z.infer<typeof GenerateCustomSchema>;
 
 /**
- * MCP Tool definition for generate-custom
+ * MCP Tool definition for custom pattern-based data generation.
+ * Supports regex, enum, format, and range patterns.
+ *
+ * @constant
+ * @type {Tool}
+ * @property {string} name - Tool identifier
+ * @property {string} description - Human-readable tool description
+ * @property {Object} inputSchema - JSON Schema for tool inputs
  */
 export const generateCustomTool: Tool = {
   name: 'generate-custom',
@@ -54,7 +75,26 @@ export const generateCustomTool: Tool = {
 };
 
 /**
- * Handler for generate-custom tool
+ * Handler function for the generate-custom MCP tool.
+ * Validates pattern definitions, generates custom data following patterns,
+ * and returns formatted MCP response.
+ *
+ * @async
+ * @param {unknown} args - Raw arguments from MCP client (validated against schema)
+ * @returns {Promise<{ content: unknown[] }>} MCP-formatted response with generated data
+ * @throws {Error} If parameter validation fails, patterns are invalid, or generation encounters an error
+ * @example
+ * ```typescript
+ * const result = await handleGenerateCustom({
+ *   count: 100,
+ *   patterns: {
+ *     orderId: { type: 'regex', value: 'ORD-[A-Z]{3}-\\d{4}' },
+ *     status: { type: 'enum', value: ['pending', 'shipped', 'delivered'] },
+ *     amount: { type: 'range', value: { min: 10, max: 1000, precision: 2 } }
+ *   },
+ *   seed: 12345
+ * });
+ * ```
  */
 export function handleGenerateCustom(args: unknown): Promise<{ content: unknown[] }> {
   const startTime = Date.now();
@@ -120,7 +160,18 @@ export function handleGenerateCustom(args: unknown): Promise<{ content: unknown[
 }
 
 /**
- * Validate pattern definitions
+ * Validates all pattern definitions in a patterns map.
+ * Checks each pattern type (regex, enum, format, range) for correctness.
+ *
+ * @param {Record<string, { type: PatternType; value: string | string[] | RangePattern }>} patterns - Map of field names to patterns
+ * @throws {Error} If any pattern is invalid, with field name and specific error
+ * @example
+ * ```typescript
+ * validatePatterns({
+ *   code: { type: PatternType.REGEX, value: '[A-Z]{3}' },
+ *   status: { type: PatternType.ENUM, value: ['active', 'inactive'] }
+ * });
+ * ```
  */
 function validatePatterns(
   patterns: Record<string, { type: PatternType; value: string | string[] | RangePattern }>
@@ -150,7 +201,15 @@ function validatePatterns(
 }
 
 /**
- * Validate regex pattern
+ * Validates a regex pattern string by attempting to compile it.
+ *
+ * @param {string} regexValue - The regex pattern to validate
+ * @throws {Error} If the regex pattern is empty or has invalid syntax
+ * @example
+ * ```typescript
+ * validateRegexPattern('[A-Z]{3}-\\d{4}'); // Valid
+ * validateRegexPattern('[invalid'); // Throws error
+ * ```
  */
 function validateRegexPattern(regexValue: string): void {
   if (typeof regexValue !== 'string' || regexValue.length === 0) {
@@ -165,7 +224,17 @@ function validateRegexPattern(regexValue: string): void {
 }
 
 /**
- * Validate enum pattern
+ * Validates an enum pattern array.
+ * Ensures the array is non-empty and contains only string values.
+ *
+ * @param {string[]} enumValues - Array of enum values
+ * @throws {Error} If the array is empty, not an array, or contains non-string values
+ * @example
+ * ```typescript
+ * validateEnumPattern(['active', 'inactive', 'pending']); // Valid
+ * validateEnumPattern([]); // Throws error
+ * validateEnumPattern([1, 2, 3]); // Throws error (not strings)
+ * ```
  */
 function validateEnumPattern(enumValues: string[]): void {
   if (!Array.isArray(enumValues)) {
@@ -182,7 +251,17 @@ function validateEnumPattern(enumValues: string[]): void {
 }
 
 /**
- * Validate format pattern
+ * Validates a format pattern string with placeholder syntax.
+ * Supports {{year}}, {{random:N}}, and {{number:N}} placeholders.
+ *
+ * @param {string} formatValue - The format template string
+ * @throws {Error} If the format is empty or contains invalid placeholders
+ * @example
+ * ```typescript
+ * validateFormatPattern('USER-{{number:4}}-{{year}}'); // Valid
+ * validateFormatPattern('CODE-{{random:5}}'); // Valid
+ * validateFormatPattern(''); // Throws error
+ * ```
  */
 function validateFormatPattern(formatValue: string): void {
   if (typeof formatValue !== 'string' || formatValue.length === 0) {
@@ -212,7 +291,17 @@ function validateFormatPattern(formatValue: string): void {
 }
 
 /**
- * Validate range pattern
+ * Validates a range pattern object.
+ * Ensures min/max are numbers, min <= max, and precision is valid.
+ *
+ * @param {RangePattern} rangeValue - The range pattern to validate
+ * @throws {Error} If the range is invalid (min > max, missing values, invalid precision)
+ * @example
+ * ```typescript
+ * validateRangePattern({ min: 0, max: 100 }); // Valid integer range
+ * validateRangePattern({ min: 0, max: 1, precision: 2 }); // Valid float range
+ * validateRangePattern({ min: 100, max: 0 }); // Throws error (min > max)
+ * ```
  */
 function validateRangePattern(rangeValue: RangePattern): void {
   if (typeof rangeValue !== 'object' || rangeValue === null) {

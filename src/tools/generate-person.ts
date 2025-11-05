@@ -5,7 +5,11 @@ import { PersonGenerator } from '../generators/person-generator.js';
 import { SupportedLocale } from '../types/schema.js';
 
 /**
- * Zod schema for generate-person parameters
+ * Zod validation schema for generate-person tool parameters.
+ * Defines and validates all input parameters for person generation.
+ *
+ * @constant
+ * @type {z.ZodObject}
  */
 export const GeneratePersonSchema = z.object({
   count: z.number().min(1).max(10000).default(1).describe('Number of person records to generate'),
@@ -19,10 +23,22 @@ export const GeneratePersonSchema = z.object({
   includeDateOfBirth: z.boolean().default(false).describe('Whether to include date of birth'),
 });
 
+/**
+ * Type definition for generate-person parameters, inferred from Zod schema.
+ *
+ * @typedef {z.infer<typeof GeneratePersonSchema>} GeneratePersonParams
+ */
 export type GeneratePersonParams = z.infer<typeof GeneratePersonSchema>;
 
 /**
- * MCP Tool definition for generate-person
+ * MCP Tool definition for person data generation.
+ * Provides tool metadata and input schema for MCP clients.
+ *
+ * @constant
+ * @type {Tool}
+ * @property {string} name - Tool identifier
+ * @property {string} description - Human-readable tool description
+ * @property {Object} inputSchema - JSON Schema for tool inputs
  */
 export const generatePersonTool: Tool = {
   name: 'generate-person',
@@ -31,7 +47,23 @@ export const generatePersonTool: Tool = {
 };
 
 /**
- * Handler for generate-person tool
+ * Handler function for the generate-person MCP tool.
+ * Validates inputs, generates person data, and returns formatted MCP response.
+ *
+ * @async
+ * @param {unknown} args - Raw arguments from MCP client (validated against schema)
+ * @returns {Promise<{ content: unknown[] }>} MCP-formatted response with generated data
+ * @throws {Error} If parameter validation fails or generation encounters an error
+ * @example
+ * ```typescript
+ * const result = await handleGeneratePerson({
+ *   count: 10,
+ *   locale: 'en',
+ *   seed: 12345,
+ *   includeAddress: true
+ * });
+ * // Returns MCP response with 10 person records
+ * ```
  */
 export function handleGeneratePerson(args: unknown): Promise<{ content: unknown[] }> {
   const startTime = Date.now();
