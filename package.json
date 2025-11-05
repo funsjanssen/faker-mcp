@@ -33,13 +33,25 @@
     "data-generation",
     "typescript"
   ],
-  "author": "",
+  "author": {
+    "name": "Funs Janssen",
+    "email": "funs.janssen@example.com",
+    "url": "https://fjan.nl"
+  },
   "license": "MIT",
   "files": [
     "dist",
     "README.md",
     "LICENSE"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/funsjanssen/faker-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/funsjanssen/faker-mcp/issues"
+  },
+  "homepage": "https://github.com/funsjanssen/faker-mcp#readme",
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
     "@modelcontextprotocol/sdk": "^0.5.0",
