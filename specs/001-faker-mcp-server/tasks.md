@@ -177,7 +177,7 @@
 - [X] T070 Validate quickstart.md scenarios work end-to-end with actual server
 - [X] T071 [P] Add example MCP client configurations to README.md (Claude Desktop, other clients)
 - [X] T072 [P] Create LICENSE file (MIT per plan.md)
-- [ ] T073 Run linting and formatting across entire codebase
+- [X] T073 Run linting and formatting across entire codebase
 - [ ] T074 Build production bundle with Vite and verify output size
 - [ ] T075 Test server startup and basic operations on macOS, Linux, and Windows (if possible)
 - [ ] T076 [P] Create npm package preparation checklist (package.json metadata, keywords, description)

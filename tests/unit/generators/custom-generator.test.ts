@@ -276,8 +276,11 @@ describe('CustomGenerator', () => {
         expect(record.rating).toBeGreaterThanOrEqual(0);
         expect(record.rating).toBeLessThanOrEqual(5);
         // Check precision (1 decimal place)
-        const decimalPart = (record.rating.toString().split('.')[1] || '').length;
-        expect(decimalPart).toBeLessThanOrEqual(1);
+        const rating = record.rating;
+        if (rating !== undefined) {
+          const decimalPart = (rating.toString().split('.')[1] || '').length;
+          expect(decimalPart).toBeLessThanOrEqual(1);
+        }
       });
     });
 
