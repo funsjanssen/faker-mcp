@@ -176,7 +176,7 @@
 - [X] T069 Run all tests and ensure 90% code coverage target is met
 - [X] T070 Validate quickstart.md scenarios work end-to-end with actual server
 - [X] T071 [P] Add example MCP client configurations to README.md (Claude Desktop, other clients)
-- [ ] T072 [P] Create LICENSE file (MIT per plan.md)
+- [X] T072 [P] Create LICENSE file (MIT per plan.md)
 - [ ] T073 Run linting and formatting across entire codebase
 - [ ] T074 Build production bundle with Vite and verify output size
 - [ ] T075 Test server startup and basic operations on macOS, Linux, and Windows (if possible)
